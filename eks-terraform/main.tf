@@ -134,6 +134,11 @@ data "aws_subnet" "subnet-2" {
 }
 data "aws_security_group" "selected" {
   vpc_id = data.aws_vpc.main.id
+ filter {
+    name = "tag:Name"
+    values = ["DefauiltSecuritygROUP"]
+ }
+
  
 }
 
