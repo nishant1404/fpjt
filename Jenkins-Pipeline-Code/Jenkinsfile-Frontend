@@ -60,7 +60,7 @@ pipeline {
                     dir('Application-Code/frontend') {
                             sh 'docker system prune -f'
                             sh 'docker container prune -f'
-                            sh 'docker build -t ${awsreponame} .'
+                            sh 'docker build -t "$awsreponame" .'
                     }
                 }
             }
@@ -69,14 +69,14 @@ pipeline {
             steps {
                 script {
                         sh 'aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URI}'
-                        sh 'docker tag ${aws_reponame} ${REPOSITORY_URI}${awsreponame}:${BUILD_NUMBER}'
+                        sh 'docker tag ${aws_reponame} ${REPOSITORY_URI}"$awsreponame":${BUILD_NUMBER}'
                         sh 'docker push ${REPOSITORY_URI}${awsreponame}:${BUILD_NUMBER}'
                 }
             }
         }
         stage("TRIVY Image Scan") {
             steps {
-                sh 'trivy image ${REPOSITORY_URI}${aws_reponame}:${BUILD_NUMBER} > trivyimage.txt' 
+                sh 'trivy image ${REPOSITORY_URI}"$aws_reponame":${BUILD_NUMBER} > trivyimage.txt' 
             }
         }
         stage('Checkout Code') {
@@ -97,7 +97,7 @@ pipeline {
                             git config user.name "nishant1404"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo $BUILD_NUMBER
-                            sed -i "s#image:.*#image: $REPOSITORY_URI$awsreponameE:$BUILD_NUMBER#g" deployment.yaml
+                            sed -i "s#image:.*#image: $REPOSITORY_URI"$awsreponameE":$BUILD_NUMBER#g" deployment.yaml
                             git add .
                             git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
                             git push https://${git_token}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
