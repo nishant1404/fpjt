@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "demos3nishant"
+    bucket = "demonishantbucket"
     key    = "eks/terraform.tfstate"
     region = "ap-south-1"
   }
