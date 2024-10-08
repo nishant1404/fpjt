@@ -59,7 +59,7 @@ pipeline {
        
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/CloudTechDevOps/fpjt.git'
+                git branch: 'main', url: 'https://github.com/nishant1404/fpjt.git'
             }
         }
         stage('Update Deployment file') {
