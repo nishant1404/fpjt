@@ -23,13 +23,11 @@ pipeline {
         }
         stage('Sonarqube Analysis') {
             steps {
-                dir('Application-Code/frontend') {
+              dir('Application-Code/frontend') {
                     withSonarQubeEnv('sonar-server') {
-                        sh ''' sonar-scanner \
-                           -Dsonar.projectKey=projectfrontend \
-                           -Dsonar.sources=. \
-                           -Dsonar.host.url=http://3.7.73.158:9000 \
-                           -Dsonar.login=1409c14feefe70e422bd1c73af52be2150975a98 '''
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=three-tier-frontend \
+                        -Dsonar.projectKey=three-tier-frontend '''
                     }
                 }
             }
